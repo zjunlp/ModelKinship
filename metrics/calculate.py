@@ -1,12 +1,7 @@
 import logging
-import click
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-
-@click.argument("model_1_name")
-@click.argument("model_2_name")
-@click.argument("model_base_name")
 def calculate_mk(
         model_1_name: str,
         model_2_name: str,

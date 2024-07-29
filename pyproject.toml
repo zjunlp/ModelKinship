@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "merge"
+description = "Tools for calculating assitant metrics"
+readme = "README.md"
+license = { text = "LGPL-3.0-or-later" }
+version = "0.0.0.1"
+authors = [{ name = "Yedi Hu", email = "yedihu.pub@gmail.com" }]
+dependencies = [
+    "transformers~=4.37.2",
+    "click~=8.1.7",
+]
+
+[project.urls]
+repository = "https://github.com/zjunlp/merge"
+
+
+[project.scripts]
+merge_cal = "metrics.run_command:main"
+
+[tool.setuptools]
+packages = [
+    "metrics",
+]
