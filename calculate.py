@@ -4,7 +4,6 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 
-@click.command("mk_cal")
 @click.argument("model_1_name")
 @click.argument("model_2_name")
 @click.argument("model_base_name")
