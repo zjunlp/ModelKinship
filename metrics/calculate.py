@@ -2,7 +2,8 @@ import logging
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-def calculate_mk(
+
+def extract_delta_parameters(
         model_1_name: str,
         model_2_name: str,
         model_base_name: str,
@@ -25,5 +26,18 @@ def calculate_mk(
     # release memory
     del state_dict_1, state_dict_2, state_dict_base
 
-    stack = torch.stack((torch.cat(d_vector_1), torch.cat(d_vector_2)), dim=0)
-    return torch.corrcoef(stack)[0][1]
+    return torch.cat(d_vector_1), torch.cat(d_vector_2)
+
+def calculate_metric(
+        model_1_name: str,
+        model_2_name: str,
+        model_base_name: str,
+        metric: str,
+):
+    d_vector_1, d_vector_2 = extract_delta_parameters(model_1_name, model_2_name, model_base_name)
+    if metric == 'pc':
+        stack = torch.stack((d_vector_1, d_vector_2), dim=0)
+        return torch.corrcoef(stack)[0][1]
+    elif metric == 'ed':
+        distance = torch.dist(d_vector_1, d_vector_2)
+        return distance / d_vector_1.numel()
