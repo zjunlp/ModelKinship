@@ -14,6 +14,7 @@ For now, the model merging community has built powerful models through multiple 
 
 However, the reasons behind the success of this process remain unknown, resulting in numerous trial-and-error attempts for slight performance improvements.
 
+![](images/selection.png)
 
 Inspired from the evolutionary biology, our project explore using information about capabilities acquired during post pre-training (e.g., fine-tuning, merging), which we called **'model kinship'**, to seek for more efficient methods for model optimization.
 
