@@ -2,7 +2,7 @@ import click
 
 from metrics.calculate import *
 
-S_LIST = ['pc','ed']
+M_LIST = ['pcc', 'ed', 'ed']
 
 
 @click.command("merge_cal")
@@ -16,15 +16,14 @@ def main(
         model_base_name: str,
         metric: str,
 ):
-    # calculate Pearson Coefficient
-    if metric in S_LIST:
+    # Calculation
+    d1, d2 = extract_delta_parameters(model_1_name, model_2_name, model_base_name)
+    for m in metric.split():
         click.echo(calculate_metric(
-            model_1_name,
-            model_2_name,
-            model_base_name,
-            metric))
-    else:
-        click.echo('Metric does not exist')
+                d1, d2,
+                m))
+    # else:
+    #     click.echo('Metric does not exist')
 
 
 if __name__ == '__main__':

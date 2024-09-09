@@ -1,6 +1,12 @@
 import logging
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
+import numpy
+
+
+def cosine_similarity(a, b):
+    similarity = numpy.sqrt(numpy.dot(a, b) ** 2 / (numpy.dot(a, a) * numpy.dot(b, b)))
+    return similarity
 
 
 def extract_delta_parameters(
@@ -28,16 +34,19 @@ def extract_delta_parameters(
 
     return torch.cat(d_vector_1), torch.cat(d_vector_2)
 
-def calculate_metric(
-        model_1_name: str,
-        model_2_name: str,
-        model_base_name: str,
-        metric: str,
-):
-    d_vector_1, d_vector_2 = extract_delta_parameters(model_1_name, model_2_name, model_base_name)
-    if metric == 'pc':
+
+def calculate_metric(d_vector_1, d_vector_2, metric):
+    # Pearson Correlation Coefficient
+    if metric == 'pcc':
         stack = torch.stack((d_vector_1, d_vector_2), dim=0)
         return torch.corrcoef(stack)[0][1]
+    # Euclidean Distance
     elif metric == 'ed':
         distance = torch.dist(d_vector_1, d_vector_2)
-        return distance / d_vector_1.numel()
+        return distance
+    # Cosine Similarity
+    elif metric == 'cs':
+        cs = cosine_similarity(d_vector_1, d_vector_2)
+        return cs
+    else:
+        return 0

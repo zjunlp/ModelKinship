@@ -10,7 +10,7 @@ Model merging provides a novel paradigm to leverage information from multiple mo
 
 For now, the model merging community has built powerful models through multiple merge steps. This process is akin to artificial selection, a concept in biology in which humans consciously select for or against particular features in organisms.
 
-![](images/evolution.png)
+![](images/evolution.jpg)
 
 However, the reasons behind the success of this process remain unknown, resulting in numerous trial-and-error attempts for slight performance improvements.
 
@@ -34,15 +34,17 @@ pip install -e .
 ## Usage
 
 ```bash
-merge_cal model-1 model-2 model-base metric
+merge_cal model-1 model-2 model-base metrics
+e.g.
+merge_cal OpenPipe/mistral-ft-optimized-1218 mlabonne/NeuralHermes-2.5-Mistral-7B mistralai/Mistral-7B-v0.1 ed
 ```
 
 ---
 
-## Supported Metric:
-
-- Pearson Coefficient - pc
-- Normalized Euclidean Distance - ed
+## Supported Metrics:
+- Cosine Similarity - cs
+- Pearson Correlation Coefficient - pcc
+- Euclidean Distance - ed
 
 Merged Models in Our Experiments:
 https://huggingface.co/PotatoB
