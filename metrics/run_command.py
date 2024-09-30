@@ -19,11 +19,10 @@ def main(
     # Calculation
     d1, d2 = extract_delta_parameters(model_1_name, model_2_name, model_base_name)
     for m in metric.split():
-        click.echo(calculate_metric(
-                d1, d2,
-                m))
-    # else:
-    #     click.echo('Metric does not exist')
+        if m in M_LIST:
+            click.echo(calculate_metric(d1, d2, m))
+        else:
+            click.echo(f"Error: Metric '{m}' does not exist.")
 
 
 if __name__ == '__main__':

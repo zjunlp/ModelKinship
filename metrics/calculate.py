@@ -39,14 +39,18 @@ def calculate_metric(d_vector_1, d_vector_2, metric):
     # Pearson Correlation Coefficient
     if metric == 'pcc':
         stack = torch.stack((d_vector_1, d_vector_2), dim=0)
-        return torch.corrcoef(stack)[0][1]
+        result = torch.corrcoef(stack)[0][1].item()
+        return f"Model Kinship based on Pearson Correlation Coefficient: {result}"
+
     # Euclidean Distance
     elif metric == 'ed':
-        distance = torch.dist(d_vector_1, d_vector_2)
-        return distance
+        distance = torch.dist(d_vector_1, d_vector_2).item()
+        return f"Model Kinship based on Euclidean Distance: {distance}"
+
     # Cosine Similarity
     elif metric == 'cs':
-        cs = cosine_similarity(d_vector_1, d_vector_2)
-        return cs
+        cs = cosine_similarity(d_vector_1, d_vector_2).item()
+        return f"Model Kinship based on Cosine Similarity: {cs}"
+
     else:
-        return 0
+        return "0"
