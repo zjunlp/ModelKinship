@@ -16,6 +16,7 @@
 - [Usage](#usage)
 - [Reproduction](#reproduction)
 - [Supported Metrics](#supported-metrics)
+- [Notebook](#notebook)
 - [Acknowledgement](#acknowledgement)
 
 ## Overview
@@ -78,6 +79,14 @@ Merged Models in Our Experiments are Open Access:
 - Cosine Similarity - cs
 - Pearson Correlation Coefficient - pcc
 - Euclidean Distance - ed
+
+---
+
+## Notebook:
+
+To conduct iterative merging experiments, you can use following notebook for a quick start.
+
+- [Notebook for Iterative Merging](https://colab.research.google.com/drive/141VAI89emgSIcwkswATEXSEENoAMywTO?usp=sharing)
 
 ---
 
