@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 [project.urls]
-repository = "https://github.com/zjunlp/merge"
+repository = "https://github.com/zjunlp/ModelKinship"
 
 
 [project.scripts]
