@@ -37,9 +37,8 @@ This toolkit provides a simple way to calculate metrics that can be possibly use
 ## Installation
 
 ```bash
-git clone https://github.com/zjunlp/merge.git
-cd merge
-pip install -e .
+git clone https://github.com/zjunlp/ModelKinship.git
+pip install -e ./ModelKinship
 ```
 
 ---
