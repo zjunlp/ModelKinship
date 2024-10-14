@@ -1,5 +1,5 @@
 <div align="center">
-<h1 align="center"> Exploring Model Kinship for Merging Large Language Models </h1>
+<h1 align="center"> Exploring Model Kinship for Merging LLMs </h1>
 <b align="center">The degree of
 similarity or relatedness between LLMs, analogous to biological evolution</b>
 
