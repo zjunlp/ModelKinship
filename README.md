@@ -1,13 +1,14 @@
 <div align="center">
-<h1 align="center"> Merge Assistant Toolkit </h1>
-<b align="center">Exploring Model Kinship for Merging Large Language Models</b>
+<h1 align="center"> Exploring Model Kinship for Merging Large Language Models </h1>
+<b align="center">The degree of
+similarity or relatedness between LLMs, analogous to biological evolution</b>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 ![](https://img.shields.io/github/last-commit/zjunlp/ModelKinship?color=green)
 
 </div>
 
-`Merge Assistant Toolkit` is a toolkit for calculating useful metrics to provide guidance for **Model Merging**. Currently, we support **Model Kinship** with 3 Similarity Metrics, other metrics will be supported in the future. 
+`We introduce **model kinship**, the degree of similarity or relatedness between LLMs for merging LLMs, analogous to biological evolution. Currently, we support **Model Kinship** with 3 Similarity Metrics, other metrics will be supported in the future. 
 
 ---
 
