@@ -8,7 +8,7 @@ similarity or relatedness between LLMs, analogous to biological evolution</b>
 
 </div>
 
-`We introduce **model kinship**, the degree of similarity or relatedness between LLMs for merging LLMs, analogous to biological evolution. Currently, we support **Model Kinship** with 3 Similarity Metrics, other metrics will be supported in the future. 
+We introduce **model kinship**, the degree of similarity or relatedness between LLMs for merging LLMs, analogous to biological evolution. Currently, we support **Model Kinship** with 3 Similarity Metrics, other metrics will be supported in the future. 
 
 ---
 
