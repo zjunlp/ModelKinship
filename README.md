@@ -89,6 +89,10 @@ To conduct iterative merging experiments, you can use following notebook for a q
 
 - [Notebook for Iterative Merging](https://colab.research.google.com/drive/141VAI89emgSIcwkswATEXSEENoAMywTO?usp=sharing)
 
+This notebook includes 3 main functions:
+- Selection - calculate the model kinship to predict the potential benefit of providing merge.
+- Merging - merge the providing models.
+- Recycling - upload the merged model.
 ---
 
 ## Acknowledgement
