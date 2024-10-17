@@ -2,7 +2,7 @@ import click
 
 from metrics.calculate import *
 
-M_LIST = ['pcc', 'ed', 'cs']
+M_LIST = ['pcc', 'cs', 'ed']
 
 
 @click.command("merge_cal")
