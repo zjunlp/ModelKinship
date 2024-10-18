@@ -1,14 +1,17 @@
 <div align="center">
+<img src="pics/logo.jpg" width="400"/>
 <h1 align="center"> Exploring Model Kinship for Merging LLMs </h1>
 <b align="center">The degree of
 similarity or relatedness between LLMs, analogous to biological evolution</b>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 ![](https://img.shields.io/github/last-commit/zjunlp/ModelKinship?color=green)
-
+<a href="https://colab.research.google.com/drive/141VAI89emgSIcwkswATEXSEENoAMywTO?usp=sharing">
+        <img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg">
+</a>
 </div>
 
-We introduce **model kinship**, the degree of similarity or relatedness between LLMs for merging LLMs, analogous to biological evolution. Currently, we support **Model Kinship** with 3 Similarity Metrics, other metrics will be supported in the future. 
+We introduce [Model Kinship](https://arxiv.org/pdf/2410.12613), the degree of similarity or relatedness between LLMs for merging LLMs, analogous to biological evolution. Currently, we support **Model Kinship** with 3 Similarity Metrics, other metrics will be supported in the future. 
 
 ---
 
@@ -21,6 +24,7 @@ We introduce **model kinship**, the degree of similarity or relatedness between 
 - [Supported Metrics](#supported-metrics)
 - [Notebook](#notebook)
 - [Acknowledgement](#acknowledgement)
+- [Citation](#citation)
 
 ## Overview
 
@@ -28,7 +32,7 @@ Model merging provides a novel paradigm to leverage information from multiple mo
 
 For now, the model merging community has built powerful models through multiple merge steps. This process is akin to artificial selection, a concept in biology in which humans consciously select for or against particular features in organisms.
 
-![](images/evolution.jpg)
+![](pics/evolution.jpg)
 
 However, the reasons behind the success of this process remain unknown, resulting in numerous trial-and-error attempts for slight performance improvements.
 Inspired from the evolutionary biology, our project explore using information about capabilities acquired during post pre-training (e.g., fine-tuning, merging), which we called **'model kinship'**, to seek for more efficient methods for model optimization.
@@ -93,7 +97,7 @@ To conduct iterative merging experiments, you can use following notebook for a q
 This notebook includes 3 main functions:
 - Selection - calculate the model kinship to predict the potential benefit of providing merge.
 - Merging - merge the providing models.
-- Recycling - upload the merged model.
+- Recycling - upload the merged model (evaluation is optional).
 ---
 
 ## Acknowledgement
@@ -106,3 +110,17 @@ We would like to express our gratitude to the developers and contributors of the
 These toolkits have significantly contributed to our ability to conduct and reproduce large-scale experiments, and their open-source availability has been invaluable to the broader research community.
 
 ---
+
+## Citation:
+
+```bash
+@misc{hu2024exploringmodelkinshipmerging,
+      title={Exploring Model Kinship for Merging Large Language Models}, 
+      author={Yedi Hu and Yunzhi Yao and Ningyu Zhang and Shumin Deng and Huajun Chen},
+      year={2024},
+      eprint={2410.12613},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2410.12613}, 
+}
+```
