@@ -32,7 +32,7 @@ def extract_delta_parameters(
     state_dict_base = AutoModelForCausalLM.from_pretrained(model_base_name).state_dict()
 
     # Determine the number of layers
-    num_layers = state_dict_1['lm_head.weight'].shape[0]
+    num_layers = state_dict_base['lm_head.weight'].shape[0]
 
     # Check if model architectures match, log a warning if not
     if state_dict_1['lm_head.weight'].shape[0] != state_dict_2['lm_head.weight'].shape[0]:
