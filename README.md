@@ -11,7 +11,9 @@ similarity or relatedness between LLMs, analogous to biological evolution</b>
 </a>
 </div>
 
-We introduce [Model Kinship](https://arxiv.org/pdf/2410.12613), the degree of similarity or relatedness between LLMs for merging LLMs, analogous to biological evolution. Currently, we support **Model Kinship** with 3 Similarity Metrics, other metrics will be supported in the future. 
+We introduce [Model Kinship](https://arxiv.org/pdf/2410.12613), the metric for degree of similarity or relatedness between LLMs for continual model merging, analogous to biological evolution. 
+
+Currently, we support **Model Kinship** with 3 Similarity Metrics, others will be supported in the future. 
 
 ---
 
@@ -28,16 +30,16 @@ We introduce [Model Kinship](https://arxiv.org/pdf/2410.12613), the degree of si
 
 ## Overview
 
-Model merging provides a novel paradigm to leverage information from multiple models without the need of additional training. The recent development of a model merging toolkit allows non-experts to conduct model merging experiments, leading to a trend of merging models on the Hugging Face Open LLM Leaderboard. 
+Model merging provides a novel paradigm to leverage information from multiple models without the need of additional training.  Recently, the development of a model merging toolkit has enabled non-experts to conduct merging experiments, spurring a trend of model merging on the Hugging Face Open LLM Leaderboard.
 
-For now, the model merging community has built powerful models through multiple merge steps. This process is akin to artificial selection, a concept in biology in which humans consciously select for or against particular features in organisms.
+Currently, the model merging community has built powerful models through iterative merging steps. This process resembles artificial selection—a concept from biology in which humans deliberately select for or against specific traits in organisms.
 
 ![](pics/evolution.jpg)
 
 However, the reasons behind the success of this process remain unknown, resulting in numerous trial-and-error attempts for slight performance improvements.
-Inspired from the evolutionary biology, our project explore using information about capabilities acquired during post pre-training (e.g., fine-tuning, merging), which we called **'model kinship'**, to seek for more efficient methods for model optimization.
+Drawing inspiration from evolutionary biology, our project examines the weight changes that occur during post pre-training stages (e.g., fine-tuning, merging). We propose **Model Kinship**, a metric that evaluates the relatedness between two models by calculating the similarity of their weight changes, analogous to genetic variance in inheritance. In our paper we show that **Model Kinship** can be used for optimising the merging strategy.
 
-This toolkit provides a simple way to calculate metrics that can be possibly used as the **'model kinship'** in model merging.
+This toolkit provides a simple way to calculate **Model Kinship** for model merging.
 
 ---
 
