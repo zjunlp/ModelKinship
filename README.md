@@ -59,13 +59,15 @@ pip install -e ./ModelKinship
 merge_cal model-1 model-2 model-base metrics
 
 # Calculate Model Kinship based on Euclidean Distance (CPU)
-merge_cal OpenPipe/mistral-ft-optimized-1218 \
+merge_cal \
+OpenPipe/mistral-ft-optimized-1218 \
 mlabonne/NeuralHermes-2.5-Mistral-7B \
 mistralai/Mistral-7B-v0.1 \
 ed
 
 # Multiple Calculation (CPU)
-merge_cal OpenPipe/mistral-ft-optimized-1218 \
+merge_cal \
+OpenPipe/mistral-ft-optimized-1218 \
 mlabonne/NeuralHermes-2.5-Mistral-7B \
 mistralai/Mistral-7B-v0.1 \
 cs,pcc,ed
