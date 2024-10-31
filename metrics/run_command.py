@@ -11,7 +11,7 @@ M_LIST = ['pcc', 'cs', 'ed']
 @click.argument("model_2_name")  # Name of the second model
 @click.argument("model_base_name")  # Name of the base model for comparison
 @click.argument("metric")  # Metric(s) to use for the calculation (space-separated)
-@click.option("--quantize", default=False, help="Enable quantized weights")  # Whether to use quantized weights
+@click.option("--quantize", '-q', is_flag=True, default=False, help="Enable quantized weights")  # Whether to use quantized weights
 def main(
         model_1_name: str,
         model_2_name: str,
