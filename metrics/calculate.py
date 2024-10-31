@@ -66,11 +66,12 @@ def extract_delta_parameters(
             d_vector_1.append(delta_1)
             d_vector_2.append(delta_2)
 
+    # Clear memory of unused variables
+    del state_dict_1, state_dict_2, state_dict_base
+
     d_vector_1 = torch.cat(d_vector_1)
     d_vector_2 = torch.cat(d_vector_2)
 
-    # Clear memory of unused variables
-    del state_dict_1, state_dict_2, state_dict_base
     if quantize:
         torch.quantize_per_tensor(d_vector_1, 0.1, 10, torch.quint8), torch.quantize_per_tensor(d_vector_2, 0.1, 10, torch.quint8)
     else:
