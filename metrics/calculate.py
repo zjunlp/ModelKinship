@@ -33,16 +33,12 @@ def extract_delta_parameters(
     model_2 = AutoModelForCausalLM.from_pretrained(model_2_name)
     model_base = AutoModelForCausalLM.from_pretrained(model_base_name)
 
-    # Apply dynamic quantization to models (reduces weights to int8)
-    if quantize:
-        model_1 = torch.quantization.quantize_dynamic(model_1, {torch.nn.Linear}, dtype=torch.qint8)
-        model_2 = torch.quantization.quantize_dynamic(model_2, {torch.nn.Linear}, dtype=torch.qint8)
-        model_base = torch.quantization.quantize_dynamic(model_base, {torch.nn.Linear}, dtype=torch.qint8)
-
     # Extract state dictionaries from quantized models
     state_dict_1 = model_1.state_dict()
     state_dict_2 = model_2.state_dict()
     state_dict_base = model_base.state_dict()
+
+    del model_1, model_2, model_base
 
     # Determine the number of layers
     num_layers = state_dict_base['lm_head.weight'].shape[0]
@@ -75,8 +71,10 @@ def extract_delta_parameters(
 
     # Clear memory of unused variables
     del state_dict_1, state_dict_2, state_dict_base
-
-    return d_vector_1, d_vector_2
+    if quantize:
+        torch.quantize_per_tensor(d_vector_1, 0.1, 10, torch.quint8), torch.quantize_per_tensor(d_vector_2, 0.1, 10, torch.quint8)
+    else:
+        return d_vector_1, d_vector_2
 
 
 def calculate_metric(d_vector_1: torch.Tensor, d_vector_2: torch.Tensor, metric: str) -> str:
