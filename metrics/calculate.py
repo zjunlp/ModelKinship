@@ -13,6 +13,7 @@ def extract_delta_parameters(
         model_1_name: str,
         model_2_name: str,
         model_base_name: str,
+        quantize: bool,
 ) -> (torch.Tensor, torch.Tensor):
     """
     Extract the delta parameters (weight differences) between two models
@@ -22,14 +23,22 @@ def extract_delta_parameters(
         model_1_name (str): Name or path of the first model.
         model_2_name (str): Name or path of the second model.
         model_base_name (str): Name or path of the base model for comparison.
+        quantize (bool): Whether to use quantized weights
 
     Returns:
         (torch.Tensor, torch.Tensor): Delta parameters of model_1 and model_2 relative to base model.
     """
-    # Load the state dictionaries for each model
-    state_dict_1 = AutoModelForCausalLM.from_pretrained(model_1_name).state_dict()
-    state_dict_2 = AutoModelForCausalLM.from_pretrained(model_2_name).state_dict()
-    state_dict_base = AutoModelForCausalLM.from_pretrained(model_base_name).state_dict()
+    # Load the state dictionaries for each model with dynamic quantization
+    model_1 = AutoModelForCausalLM.from_pretrained(model_1_name)
+    model_2 = AutoModelForCausalLM.from_pretrained(model_2_name)
+    model_base = AutoModelForCausalLM.from_pretrained(model_base_name)
+
+    # Extract state dictionaries from quantized models
+    state_dict_1 = model_1.state_dict()
+    state_dict_2 = model_2.state_dict()
+    state_dict_base = model_base.state_dict()
+
+    del model_1, model_2, model_base
 
     # Determine the number of layers
     num_layers = state_dict_base['lm_head.weight'].shape[0]
@@ -57,13 +66,16 @@ def extract_delta_parameters(
             d_vector_1.append(delta_1)
             d_vector_2.append(delta_2)
 
-    d_vector_1 = torch.cat(d_vector_1)
-    d_vector_2 = torch.cat(d_vector_2)
-
     # Clear memory of unused variables
     del state_dict_1, state_dict_2, state_dict_base
 
-    return d_vector_1, d_vector_2
+    d_vector_1 = torch.cat(d_vector_1)
+    d_vector_2 = torch.cat(d_vector_2)
+
+    if quantize:
+        torch.quantize_per_tensor(d_vector_1, 0.1, 10, torch.quint8), torch.quantize_per_tensor(d_vector_2, 0.1, 10, torch.quint8)
+    else:
+        return d_vector_1, d_vector_2
 
 
 def calculate_metric(d_vector_1: torch.Tensor, d_vector_2: torch.Tensor, metric: str) -> str:

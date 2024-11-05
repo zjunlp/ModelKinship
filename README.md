@@ -4,6 +4,14 @@
 <b align="center">The degree of
 similarity or relatedness between LLMs, analogous to biological evolution</b>
 
+
+  <a href="https://arxiv.org/abs/2410.12613">📄arXiv</a> •
+  <a href="https://potatobearp.github.io/publication/modelkinship/">📒 Blog</a>•
+  <a href="https://huggingface.co/collections/zjunlp/model-kinship-670d59c69bf3598b0bed1cbd">🤗 HF</a> •
+  <a href="https://notebooklm.google.com/notebook/720d2f64-fdd2-47e2-a086-7870b8db23e5/audio">🎧NotebookLM Audio</a>
+
+
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 ![](https://img.shields.io/github/last-commit/zjunlp/ModelKinship?color=green)
 <a href="https://colab.research.google.com/drive/141VAI89emgSIcwkswATEXSEENoAMywTO?usp=sharing">
