@@ -22,7 +22,7 @@ def main(
         relative to a base model, model_base_name.
         """
     # Extract delta parameters between models for calculation
-    d1, d2 = extract_delta_parameters(model_1_name, model_2_name, model_base_name)
+    d1, d2 = extract_delta_parameters(model_1_name, model_2_name, model_base_name, quantize=False)
 
     # Iterate over metrics (in case multiple are provided, separated by space)
     for m in metric.split():
