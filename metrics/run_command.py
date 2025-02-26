@@ -1,38 +1,95 @@
 import click
-
+from typing import List, Tuple
+from enum import Enum, auto
 from metrics.calculate import *
+from metrics.utility import *
 
-# List of supported metrics
-M_LIST = ['pcc', 'cs', 'ed']
+class Metric(str, Enum):
+    """Enum for supported metrics to ensure type safety and autocompletion"""
+    PCC = 'pcc'  # Pearson Correlation Coefficient
+    CS = 'cs'    # Cosine Similarity
+    ED = 'ed'    # Euclidean Distance
+
+    @classmethod
+    def list(cls) -> List[str]:
+        """Returns list of supported metric values"""
+        return [metric.value for metric in cls]
+
+
+def calculate_model_kinship(
+        delta1: np.ndarray,
+        delta2: np.ndarray,
+        metrics: List[str]
+) -> dict:
+    """
+    Calculate model kinship using specified metrics.
+
+    Args:
+        delta1: Delta parameters for first model
+        delta2: Delta parameters for second model
+        metrics: List of metrics to calculate
+
+    Returns:
+        dict: Dictionary of metric names and their calculated values
+    """
+    results = {}
+    for metric in metrics:
+        try:
+            if metric not in Metric.list():
+                raise ValueError(f"Unsupported metric: {metric}")
+            results[metric] = calculate_metric(delta1, delta2, metric)
+        except Exception as e:
+            results[metric] = f"Error calculating {metric}: {str(e)}"
+    return results
 
 
 @click.command("merge_cal")
-@click.argument("model_1_name")  # Name of the first model
-@click.argument("model_2_name")  # Name of the second model
-@click.argument("model_base_name")  # Name of the base model for comparison
-@click.argument("metric")  # Metric(s) to use for the calculation (space-separated)
+@click.argument("model_1_name", type=str)
+@click.argument("model_2_name", type=str)
+@click.argument("model_base_name", type=str)
+@click.argument("metric", type=str)
+@click.option(
+    "--low-precision",
+    is_flag=True,
+    default=False,
+    help="Use low precision for parameter extraction"
+)
 def main(
-        model_1_name: str,
-        model_2_name: str,
-        model_base_name: str,
-        metric: str,
+    model_1_name: str,
+    model_2_name: str,
+    model_base_name: str,
+    metric: str,
+    low_precision: bool,
 ):
     """
         This function calculates the model kinship between model_1 and model_2
         relative to a base model, model_base_name.
         """
     # Extract delta parameters between models for calculation
-    d1, d2 = extract_delta_parameters(model_1_name, model_2_name, model_base_name, quantize=False)
+    try:
+        # Validate input models
+        validate_models(model_1_name, model_2_name, model_base_name)
 
-    # Iterate over metrics (in case multiple are provided, separated by space)
-    for m in metric.split():
-        # Check if the provided metric is supported
-        if m in M_LIST:
-            # Calculate and display the result for the given metric
-            click.echo(calculate_metric(d1, d2, m))
-        else:
-            # Output error if an unsupported metric is provided
-            click.echo(f"Error: Metric '{m}' does not exist.")
+        # Parse metrics
+        metrics = metric.split()
+        if not metrics:
+            raise click.BadParameter("At least one metric must be specified")
+
+        # Extract parameters
+        d1, d2 = extract_delta_parameters(
+            model_1_name,
+            model_2_name,
+            model_base_name,
+            low_precision=low_precision
+        )
+
+        results = calculate_model_kinship(d1, d2, metrics)
+        for metric_name, value in results.items():
+            click.echo(f"{metric_name}: {value}")
+
+    except Exception as e:
+        click.echo(f"Error: {str(e)}", err=True)
+        raise click.Abort()
 
 
 if __name__ == '__main__':
