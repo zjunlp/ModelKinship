@@ -1,4 +1,4 @@
-from transformers import AutoConfig, PretrainedConfig
+from transformers import AutoConfig, PretrainedConfig, AutoModelForCausalLM, AutoTokenizer
 import torch
 
 def get_config(model: str, trust_remote_code: bool = False) -> PretrainedConfig:
