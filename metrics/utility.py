@@ -43,7 +43,7 @@ def validate_models(
         raise click.BadParameter("All model names must be different")
 
 
-def quantize_2bit(x: torch.Tensor) -> torch.Tensor:
+def quantize_8bit(x: torch.Tensor) -> torch.Tensor:
     # Get min and max values
     x_min, x_max = x.min(), x.max()
 
@@ -137,8 +137,8 @@ def extract_delta_parameters(
     d_vector_2 = torch.cat(d_vector_2)
 
     if low_precision:
-        d_vector_1 = quantize_2bit(d_vector_1)
-        d_vector_2 = quantize_2bit(d_vector_2)
+        d_vector_1 = quantize_8bit(d_vector_1)
+        d_vector_2 = quantize_8bit(d_vector_2)
 
     else:
         return d_vector_1, d_vector_2
