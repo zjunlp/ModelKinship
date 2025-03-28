@@ -1,5 +1,5 @@
 from transformers import AutoConfig, PretrainedConfig
-
+import torch
 
 def get_config(model: str, trust_remote_code: bool = False) -> PretrainedConfig:
     """
@@ -41,7 +41,7 @@ def validate_models(
         raise click.BadParameter("All model names must be different")
 
 
-def quantize_8bit(x: torch.Tensor) -> torch.Tensor:
+def quantize_2bit(x: torch.Tensor) -> torch.Tensor:
     # Get min and max values
     x_min, x_max = x.min(), x.max()
 
