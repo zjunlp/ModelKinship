@@ -1,5 +1,5 @@
 import click
-import numpy as np
+import numpy
 from typing import List, Tuple
 from enum import Enum, auto
 from metrics.calculate import *
@@ -18,8 +18,8 @@ class Metric(str, Enum):
 
 
 def calculate_model_kinship(
-        delta1: np.ndarray,
-        delta2: np.ndarray,
+        delta1: numpy.ndarray,
+        delta2: numpy.ndarray,
         metrics: List[str]
 ) -> dict:
     """
