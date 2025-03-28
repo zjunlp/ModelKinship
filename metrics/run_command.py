@@ -1,4 +1,5 @@
 import click
+import numpy as np
 from typing import List, Tuple
 from enum import Enum, auto
 from metrics.calculate import *
