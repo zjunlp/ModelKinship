@@ -1,7 +1,7 @@
 from transformers import AutoConfig, PretrainedConfig, AutoModelForCausalLM, AutoTokenizer
 import torch
 import logging
-
+from tqdm import tqdm
 
 def get_config(model: str, trust_remote_code: bool = False) -> PretrainedConfig:
     """
@@ -98,13 +98,18 @@ def extract_delta_parameters(
 
     # Check if model architectures match, log a warning if not
     if state_dict_1['lm_head.weight'].shape[0] != state_dict_2['lm_head.weight'].shape[0]:
-        logging.warning('Warning: Model architectures do not match. Using sub weight space instead.')
+        shape_1 = state_dict_1['lm_head.weight'].shape
+        shape_2 = state_dict_2['lm_head.weight'].shape
+        logging.warning(f'Warning: Model architectures do not match. '
+                        f'Using sub weight space instead.\n'
+                        f'lm_head.weight shape in model 1: {shape_1}, '
+                        f'lm_head.weight shape in model 2: {shape_2}')
 
     # Initialize lists to store delta parameters for both models
     d_vector_1, d_vector_2 = [], []
 
-    # Iterate over keys in the base model's state dictionary
-    for key, base_params in state_dict_base.items():
+    # Iterate over keys in the base model's state dictionary with tqdm
+    for key, base_params in tqdm(state_dict_base.items(), desc="Processing keys", unit="key"):
         # Only proceed if key exists in both models
         try:
             if key not in state_dict_1 or key not in state_dict_2:
