@@ -1,6 +1,6 @@
 import logging
 from typing import List
-from metrics.run_command import Metric
+from metrics.utility import Metric
 import torch
 import numpy
 

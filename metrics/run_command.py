@@ -1,21 +1,7 @@
 import click
-from typing import List
-from enum import Enum
 from metrics.calculate import calculate_model_kinship
 from metrics.calculate_split import calculate_model_kinship_split
 from metrics.utility import validate_models, extract_delta_parameters
-
-class Metric(str, Enum):
-    """Enum for supported metrics to ensure type safety and autocompletion"""
-    PCC = 'pcc'  # Pearson Correlation Coefficient
-    CS = 'cs'    # Cosine Similarity
-    ED = 'ed'    # Euclidean Distance
-
-    @classmethod
-    def list(cls) -> List[str]:
-        """Returns list of supported metric values"""
-        return [metric.value for metric in cls]
-    
 
 @click.command("merge_cal")
 @click.argument("model_1_name", type=str)

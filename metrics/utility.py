@@ -3,8 +3,22 @@ import torch
 import logging
 from tqdm import tqdm
 import click
+from typing import List
+from enum import Enum
 
 logging.basicConfig(level=logging.INFO, force=True)
+
+class Metric(str, Enum):
+    """Enum for supported metrics to ensure type safety and autocompletion"""
+    PCC = 'pcc'  # Pearson Correlation Coefficient
+    CS = 'cs'    # Cosine Similarity
+    ED = 'ed'    # Euclidean Distance
+
+    @classmethod
+    def list(cls) -> List[str]:
+        """Returns list of supported metric values"""
+        return [metric.value for metric in cls]
+    
 
 def get_config(model: str, trust_remote_code: bool = False) -> PretrainedConfig:
     """

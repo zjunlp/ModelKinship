@@ -1,10 +1,9 @@
 import logging
 from typing import List
-from metrics.run_command import Metric
+from metrics.utility import Metric, quantize_8bit, load_model_state_dict
 import torch
 import numpy
 import tqdm
-from metrics.utility import quantize_8bit, load_model_state_dict
 
 logging.basicConfig(level=logging.INFO, force=True)
 
