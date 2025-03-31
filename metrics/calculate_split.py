@@ -89,19 +89,7 @@ def calculate_metrics_by_split(
                 logging.warning(f'Key {key} not found in one of the models')
                 continue
 
-            # Get parameters and calculate deltas
-            params_1 = state_dict_1[key][:num_layers]
-            params_2 = state_dict_2[key][:num_layers]
-            
-            delta_1 = (params_1 - base_params).view(-1)
-            delta_2 = (params_2 - base_params).view(-1)
-
-            if low_precision:
-                delta_1 = quantize_8bit(delta_1)
-                delta_2 = quantize_8bit(delta_2)
-
-            # Calculate weight based on parameter count
-            weight = delta_1.numel()
+            # ...existing parameter extraction code...
 
             # Calculate metric for current key
             if metric == 'pcc':
@@ -114,10 +102,17 @@ def calculate_metrics_by_split(
             else:
                 raise ValueError(f"Unsupported metric: {metric}")
             
-            # Store individual key result
-            split_results[key] = split_similarity
+            # Skip NaN values
+            if torch.isnan(torch.tensor(split_similarity)):
+                logging.warning(f'Skipping key {key} due to NaN result')
+                continue
 
-            # Update weighted average
+            # Store valid result
+            split_results[key] = split_similarity
+            valid_splits += 1
+
+            # Update weighted average only for valid results
+            weight = delta_1.numel()
             total_similarity += split_similarity * weight
             total_weight += weight
 
