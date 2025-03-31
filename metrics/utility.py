@@ -148,5 +148,4 @@ def extract_delta_parameters(
         d_vector_2 = quantize_8bit(d_vector_2)
         logging.info('Quantization complete')
 
-    else:
-        return d_vector_1, d_vector_2
+    return d_vector_1, d_vector_2
