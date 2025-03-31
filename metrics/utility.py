@@ -3,6 +3,8 @@ import torch
 import logging
 from tqdm import tqdm
 
+logging.basicConfig(level=logging.INFO, force=True)
+
 def get_config(model: str, trust_remote_code: bool = False) -> PretrainedConfig:
     """
     Fetch the configuration of a pretrained model from HuggingFace.
@@ -135,16 +137,16 @@ def extract_delta_parameters(
     # Clear memory
     del state_dict_1, state_dict_2, state_dict_base
 
-    logging.info("Concatenating delta vectors...")
+    logging.info('Concatenating delta vectors...')
 
     d_vector_1 = torch.cat(d_vector_1)
     d_vector_2 = torch.cat(d_vector_2)
 
     if low_precision:
-        logging.info("Quantizing delta vectors to 8-bit precision...")
+        logging.info('Quantizing delta vectors to 8-bit precision...')
         d_vector_1 = quantize_8bit(d_vector_1)
         d_vector_2 = quantize_8bit(d_vector_2)
-        logging.info("Quantization complete")
+        logging.info('Quantization complete')
 
     else:
         return d_vector_1, d_vector_2

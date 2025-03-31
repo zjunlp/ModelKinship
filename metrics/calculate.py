@@ -2,6 +2,7 @@ import logging
 import torch
 import numpy
 
+logging.basicConfig(level=logging.INFO, force=True)
 
 def cosine_similarity(a, b):
     similarity = numpy.sqrt(numpy.dot(a, b) ** 2 / (numpy.dot(a, a) * numpy.dot(b, b)))
@@ -20,7 +21,7 @@ def calculate_metric(d_vector_1: torch.Tensor, d_vector_2: torch.Tensor, metric:
     Returns:
         str: A formatted string with the result of the chosen metric.
     """
-    logging.info(f"Starting calculation of {metric.upper()} metric...")
+    logging.info(f'Starting calculation of {metric.upper()} metric...')
 
     # Pearson Correlation Coefficient (PCC)
     if metric == 'pcc':
