@@ -9,14 +9,14 @@ from enum import Enum
 logging.basicConfig(level=logging.INFO, force=True)
 
 class Metric(str, Enum):
-    """Enum for supported metrics to ensure type safety and autocompletion"""
-    PCC = 'pcc'  # Pearson Correlation Coefficient
-    CS = 'cs'    # Cosine Similarity
-    ED = 'ed'    # Euclidean Distance
+    """Enumeration of supported metrics"""
+    PCC = 'pcc'
+    ED = 'ed'
+    CS = 'cs'
 
     @classmethod
     def list(cls) -> List[str]:
-        """Returns list of supported metric values"""
+        """Return list of supported metric values"""
         return [metric.value for metric in cls]
     
 

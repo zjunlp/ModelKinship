@@ -1,5 +1,5 @@
 import logging
-from typing import List
+from typing import List,Dict
 from metrics.utility import Metric, quantize_8bit, load_model_state_dict
 import torch
 import numpy
@@ -25,13 +25,24 @@ def calculate_model_kinship_split(
     state_dict_2 = load_model_state_dict(model_2_name, device)
     state_dict_base = load_model_state_dict(model_base_name, device)
     results = {}
+
+    # Validate metrics before processing
+    valid_metrics = Metric.list()
     for metric in metrics:
         try:
-            if metric not in Metric.list():
-                raise ValueError(f"Unsupported metric: {metric}")
-            results[metric] = calculate_metrics_by_split(state_dict_1, state_dict_2,state_dict_base,low_precision, metric)
+            if metric not in valid_metrics:
+                raise ValueError(f"Unsupported metric: {metric}. Valid metrics are: {', '.join(valid_metrics)}")
+            results[metric] = calculate_metrics_by_split(
+                state_dict_1, 
+                state_dict_2,
+                state_dict_base,
+                low_precision, 
+                metric
+            )
         except Exception as e:
+            logging.error(f"Error calculating {metric}: {str(e)}")
             results[metric] = f"Error calculating {metric}: {str(e)}"
+    
     return results
 
 
