@@ -1,4 +1,6 @@
 import logging
+from typing import List
+from metrics.run_command import Metric
 import torch
 import numpy
 
@@ -7,6 +9,34 @@ logging.basicConfig(level=logging.INFO, force=True)
 def cosine_similarity(a, b):
     similarity = numpy.sqrt(numpy.dot(a, b) ** 2 / (numpy.dot(a, a) * numpy.dot(b, b)))
     return similarity
+
+
+def calculate_model_kinship(
+        delta1: numpy.ndarray,
+        delta2: numpy.ndarray,
+        metrics: List[str]
+) -> dict:
+    """
+    Calculate model kinship using specified metrics.
+
+    Args:
+        delta1: Delta parameters for first model
+        delta2: Delta parameters for second model
+        metrics: List of metrics to calculate
+
+    Returns:
+        dict: Dictionary of metric names and their calculated values
+    """
+    results = {}
+    for metric in metrics:
+        try:
+            if metric not in Metric.list():
+                raise ValueError(f"Unsupported metric: {metric}")
+            results[metric] = calculate_metric(delta1, delta2, metric)
+        except Exception as e:
+            results[metric] = f"Error calculating {metric}: {str(e)}"
+    return results
+
 
 
 def calculate_metric(d_vector_1: torch.Tensor, d_vector_2: torch.Tensor, metric: str) -> str:

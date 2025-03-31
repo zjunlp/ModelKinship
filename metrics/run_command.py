@@ -1,9 +1,9 @@
 import click
-import numpy
-from typing import List, Tuple
-from enum import Enum, auto
-from metrics.calculate import *
-from metrics.utility import *
+from typing import List
+from enum import Enum
+from metrics.calculate import calculate_model_kinship
+from metrics.calculate_split import calculate_model_kinship_split
+from metrics.utility import validate_models, extract_delta_parameters
 
 class Metric(str, Enum):
     """Enum for supported metrics to ensure type safety and autocompletion"""
@@ -15,34 +15,7 @@ class Metric(str, Enum):
     def list(cls) -> List[str]:
         """Returns list of supported metric values"""
         return [metric.value for metric in cls]
-
-
-def calculate_model_kinship(
-        delta1: numpy.ndarray,
-        delta2: numpy.ndarray,
-        metrics: List[str]
-) -> dict:
-    """
-    Calculate model kinship using specified metrics.
-
-    Args:
-        delta1: Delta parameters for first model
-        delta2: Delta parameters for second model
-        metrics: List of metrics to calculate
-
-    Returns:
-        dict: Dictionary of metric names and their calculated values
-    """
-    results = {}
-    for metric in metrics:
-        try:
-            if metric not in Metric.list():
-                raise ValueError(f"Unsupported metric: {metric}")
-            results[metric] = calculate_metric(delta1, delta2, metric)
-        except Exception as e:
-            results[metric] = f"Error calculating {metric}: {str(e)}"
-    return results
-
+    
 
 @click.command("merge_cal")
 @click.argument("model_1_name", type=str)
@@ -55,12 +28,19 @@ def calculate_model_kinship(
     default=False,
     help="Use low precision for parameter extraction"
 )
+@click.option(
+    "--split-calculation",
+    is_flag=True,
+    default=False,
+    help="Calculate similarity per split instead of full vector"
+)
 def main(
     model_1_name: str,
     model_2_name: str,
     model_base_name: str,
     metric: str,
     low_precision: bool,
+    split_calculation: bool,
 ):
     """
         This function calculates the model kinship between model_1 and model_2
@@ -76,15 +56,24 @@ def main(
         if not metrics:
             raise click.BadParameter("At least one metric must be specified")
 
+        if split_calculation:
         # Extract parameters
-        d1, d2 = extract_delta_parameters(
-            model_1_name,
-            model_2_name,
-            model_base_name,
-            low_precision=low_precision
-        )
+            results = calculate_model_kinship_split(
+                model_1_name,
+                model_2_name,
+                model_base_name,
+                low_precision=low_precision,
+                metrics=metrics
+            )
+        else:
+            d1, d2 = extract_delta_parameters(
+                model_1_name,
+                model_2_name,
+                model_base_name,
+                low_precision=low_precision
+            )
 
-        results = calculate_model_kinship(d1, d2, metrics)
+            results = calculate_model_kinship(d1, d2, metrics)
         for metric_name, value in results.items():
             click.echo(f"{metric_name}: {value}")
 

@@ -2,6 +2,7 @@ from transformers import AutoConfig, PretrainedConfig, AutoModelForCausalLM, Aut
 import torch
 import logging
 from tqdm import tqdm
+import click
 
 logging.basicConfig(level=logging.INFO, force=True)
 
@@ -62,13 +63,31 @@ def quantize_8bit(x: torch.Tensor) -> torch.Tensor:
     return quantized
 
 
+def load_model_state_dict(model_name: str, device: str) -> dict:
+    """
+    Load a model and return its state dictionary.
+    
+    Args:
+        model_name (str): Name or path of the model to load
+        device (str): Device to load the model on ('cuda' or 'cpu')
+        
+    Returns:
+        dict: State dictionary of the loaded model
+    """
+    logging.info(f"Loading model: {model_name}")
+    model = AutoModelForCausalLM.from_pretrained(model_name).to(device)
+    state_dict = model.state_dict()
+    del model  # Free memory
+    return state_dict
+
+
 def extract_delta_parameters(
         model_1_name: str,
         model_2_name: str,
         model_base_name: str,
         low_precision: bool,
         device: str = 'cuda' if torch.cuda.is_available() else 'cpu'
-) -> (torch.Tensor, torch.Tensor):
+) -> tuple[torch.Tensor, torch.Tensor]:
 
     """
     Extract the delta parameters (weight differences) between two models
@@ -85,17 +104,9 @@ def extract_delta_parameters(
     """
 
     # Extract state dictionaries from models
-    model_1 = AutoModelForCausalLM.from_pretrained(model_1_name).to(device)
-    state_dict_1 = model_1.state_dict()
-    del model_1
-
-    model_2 = AutoModelForCausalLM.from_pretrained(model_2_name).to(device)
-    state_dict_2 = model_2.state_dict()
-    del model_2
-
-    model_base = AutoModelForCausalLM.from_pretrained(model_base_name).to(device)
-    state_dict_base = model_base.state_dict()
-    del model_base
+    state_dict_1 = load_model_state_dict(model_1_name, device)
+    state_dict_2 = load_model_state_dict(model_2_name, device)
+    state_dict_base = load_model_state_dict(model_base_name, device)
 
     # Determine the number of layers
     num_layers = state_dict_base['lm_head.weight'].shape[0]
