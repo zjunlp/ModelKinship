@@ -89,7 +89,19 @@ def calculate_metrics_by_split(
                 logging.warning(f'Key {key} not found in one of the models')
                 continue
 
-            # ...existing parameter extraction code...
+            # Get parameters and calculate deltas
+            params_1 = state_dict_1[key][:num_layers]
+            params_2 = state_dict_2[key][:num_layers]
+            
+            delta_1 = (params_1 - base_params).view(-1)
+            delta_2 = (params_2 - base_params).view(-1)
+
+            if low_precision:
+                delta_1 = quantize_8bit(delta_1)
+                delta_2 = quantize_8bit(delta_2)
+
+            # Calculate weight based on parameter count
+            weight = delta_1.numel()
 
             # Calculate metric for current key
             if metric == 'pcc':
@@ -127,16 +139,21 @@ def calculate_metrics_by_split(
             logging.error(f'Error processing key {key}: {str(e)}')
             continue
 
+        
     # Calculate final weighted average
     if total_weight > 0:
         final_result = total_similarity / total_weight
         
-        # Log detailed results
+        # Log summary statistics
+        logging.info(f'\nSummary for {metric.upper()}:')
+        logging.info(f'Total valid splits: {valid_splits}')
+        logging.info(f'Total parameters: {total_weight}')
+        
+        # Log detailed results for valid splits
         logging.info(f'\nDetailed {metric.upper()} results by key:')
         for key, value in split_results.items():
             logging.info(f'{key}: {value:.4f}')
         
-        # Format metric name for output
         metric_names = {
             'pcc': 'Pearson Correlation Coefficient',
             'ed': 'Euclidean Distance',
