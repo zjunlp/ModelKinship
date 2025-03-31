@@ -3,7 +3,7 @@ from typing import List,Dict
 from metrics.utility import Metric, quantize_8bit, load_model_state_dict
 import torch
 import numpy
-import tqdm
+from tqdm import tqdm 
 
 logging.basicConfig(level=logging.INFO, force=True)
 
