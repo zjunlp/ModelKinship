@@ -104,8 +104,8 @@ def extract_delta_parameters(
         shape_2 = state_dict_2['lm_head.weight'].shape
         logging.warning(f'Warning: Model architectures do not match. '
                         f'Using sub weight space instead.\n'
-                        f'lm_head.weight shape in model 1: {shape_1}, '
-                        f'lm_head.weight shape in model 2: {shape_2}')
+                        f'Vocab sizes in model 1: {shape_1[0]}, '
+                        f'Vocab sizes in model 2: {shape_2[0]}')
 
     # Initialize lists to store delta parameters for both models
     d_vector_1, d_vector_2 = [], []
@@ -134,6 +134,8 @@ def extract_delta_parameters(
 
     # Clear memory
     del state_dict_1, state_dict_2, state_dict_base
+
+    logging.info("Concatenating delta vectors...")
 
     d_vector_1 = torch.cat(d_vector_1)
     d_vector_2 = torch.cat(d_vector_2)

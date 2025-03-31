@@ -20,6 +20,7 @@ def calculate_metric(d_vector_1: torch.Tensor, d_vector_2: torch.Tensor, metric:
     Returns:
         str: A formatted string with the result of the chosen metric.
     """
+    logging.info(f"Starting calculation of {metric.upper()} metric...")
 
     # Pearson Correlation Coefficient (PCC)
     if metric == 'pcc':
