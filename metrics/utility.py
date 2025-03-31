@@ -44,18 +44,20 @@ def validate_models(
 
 
 def quantize_8bit(x: torch.Tensor) -> torch.Tensor:
-    # Get min and max values
-    x_min, x_max = x.min(), x.max()
-
-    # Create 256 evenly spaced levels between min and max (8-bit = 2^8 = 256 levels)
-    levels = torch.linspace(x_min, x_max, 256, device=x.device)
-
-    # For each value in x, find the closest level
-    # Using torch.bucketize for efficient binning
-    indices = torch.bucketize(x, levels).clamp(0, 255)
-
-    # Return the quantized values
-    return levels[indices]
+    # Get absolute min and max values
+    abs_max = torch.max(torch.abs(x))
+    
+    # Scale to [-127, 127] range for 8-bit signed integers
+    # Using 127 instead of 128 to keep zero exactly representable
+    scaled = 127 * (x / abs_max)
+    
+    # Round to nearest integer
+    quantized = torch.round(scaled)
+    
+    # Clamp values to ensure they stay in valid range
+    quantized = torch.clamp(quantized, -127, 127)
+    
+    return quantized
 
 
 def extract_delta_parameters(
@@ -137,8 +139,10 @@ def extract_delta_parameters(
     d_vector_2 = torch.cat(d_vector_2)
 
     if low_precision:
+        logging.info("Quantizing delta vectors to 8-bit precision...")
         d_vector_1 = quantize_8bit(d_vector_1)
         d_vector_2 = quantize_8bit(d_vector_2)
+        logging.info("Quantization complete")
 
     else:
         return d_vector_1, d_vector_2
