@@ -121,7 +121,6 @@ def calculate_metrics_by_split(
 
             # Store valid result
             split_results[key] = split_similarity
-            valid_splits += 1
 
             # Update weighted average only for valid results
             weight = delta_1.numel()
@@ -146,7 +145,6 @@ def calculate_metrics_by_split(
         
         # Log summary statistics
         logging.info(f'\nSummary for {metric.upper()}:')
-        logging.info(f'Total valid splits: {valid_splits}')
         logging.info(f'Total parameters: {total_weight}')
         
         # Log detailed results for valid splits
