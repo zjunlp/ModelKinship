@@ -64,7 +64,7 @@ pip install -e ./ModelKinship
 
 ```bash
 # Input Format
-merge_cal model-1 model-2 model-base metrics
+merge_cal model-1 model-2 model-base metrics [options]
 
 # Calculate Model Kinship based on Euclidean Distance (CPU)
 merge_cal OpenPipe/mistral-ft-optimized-1218 \
@@ -77,7 +77,29 @@ merge_cal OpenPipe/mistral-ft-optimized-1218 \
 mlabonne/NeuralHermes-2.5-Mistral-7B \
 mistralai/Mistral-7B-v0.1 \
 cs,pcc,ed
+
 ```
+
+### Optional Arguments
+
+- `--low-precision`: Enable 8-bit quantization for parameter extraction. Reduces memory usage but may slightly affect accuracy.
+  ```bash
+  merge_cal model-1 model-2 model-base metrics --low-precision
+  ```
+
+- `--split-calculation`: Calculate metrics per layer/key instead of full vector to reduce RAM usage.
+  ```bash
+  merge_cal model-1 model-2 model-base metrics --split-calculation
+  ```
+
+Example with multiple options:
+```bash
+merge_cal OpenPipe/mistral-ft-optimized-1218 \
+mlabonne/NeuralHermes-2.5-Mistral-7B \
+mistralai/Mistral-7B-v0.1 \
+pcc cs --low-precision --split-calculation
+```
+
 ---
 
 ## Reproduction
